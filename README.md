@@ -9,9 +9,9 @@ Criar o backend de um To-Do-List simples
 - Excluir
 
 Banco de dados em SQLite
-id
-title
-description
-completed
-created_at
-updated_at
+- id
+- title
+- description
+- completed
+- created_at
+- updated_at
