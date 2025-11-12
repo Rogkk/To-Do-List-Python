@@ -1,0 +1,19 @@
+# Ignorar ambiente virtual
+venv/
+.env/
+.venv/
+todo/
+.todo/
+
+# Ignorar arquivos de banco de dados
+*.db
+
+# Outros comuns em projetos Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Arquivos temporários
+*.log
+*.tmp
