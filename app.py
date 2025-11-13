@@ -34,6 +34,16 @@ def read_all():
         print("-" * 150)
     conn.close()
 
+def update(id, newTitle=None, newDescription=None):
+    updated_at = int(time.time())
+    if newTitle is not None and newDescription is not None:
+        cursor.execute("UPDATE tasks SET title = ?, description = ?, updated_at = ? WHERE id = ?", (newTitle, newDescription, updated_at, id))
+    elif newTitle is not None:
+        cursor.execute("UPDATE tasks SET title = ?, updated_at = ? WHERE id = ?", (newTitle, updated_at, id))
+    elif newDescription is not None:
+        cursor.execute("UPDATE tasks SET description = ?, updated_at = ? WHERE id = ?", (newDescription, updated_at, id))
+    conn.commit()
+    conn.close
 
 
 
@@ -43,8 +53,23 @@ def menu_create():
     description = input("Description: ")
     create(title, description)
 
+def menu_update():
+    print("===== ATUALIZAR NOVA TAREFA =====")
+    id = int(input("ID: "))
+    title = input("Title: ")
+    description = input("Description: ")
+
+    if title.strip() == "" and description.strip() == "":
+        return
+    elif title.strip() == "":
+        update(id, newDescription=description)
+    elif description.strip() == "":
+        update(id, newTitle=title)
+    else:
+        update(id, title, description)
+
 #if __name__ == '__main__': # inicializa o app
 #    app.run(debug=True)
 
-menu_create()
+menu_update()
 read_all()
