@@ -2,6 +2,11 @@ from flask import Flask
 import sqlite3
 import time
 
+def limpar_tela():
+    import os
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
 app = Flask(__name__) # instancia o aplicativo flask
 
 # criar o banco de dados
@@ -32,7 +37,7 @@ def read_all():
         id, title, description, completed, created_at, updated_at = task
         print(f"ID:{id}\t\tTitle:{title}\t\tDescr:{description}\t\tComple:{completed}\t\tCreat:{created_at}\t\tUpd:{updated_at}")
         print("-" * 150)
-    conn.close()
+    
 
 def update(id, newTitle=None, newDescription=None):
     updated_at = int(time.time())
@@ -43,7 +48,6 @@ def update(id, newTitle=None, newDescription=None):
     elif newDescription is not None:
         cursor.execute("UPDATE tasks SET description = ?, updated_at = ? WHERE id = ?", (newDescription, updated_at, id))
     conn.commit()
-    conn.close
 
 
 
@@ -68,8 +72,28 @@ def menu_update():
     else:
         update(id, title, description)
 
-#if __name__ == '__main__': # inicializa o app
-#    app.run(debug=True)
+def menu():
+    while True:
+        print("\n===== MENU DE TAREFAS =====")
+        print("1 - Nova tarefa")
+        print("2 - Atualizar tarefa")
+        print("3 - Ver tarefas")
+        print("0 - Sair")
 
-menu_update()
-read_all()
+        opcao = input("Escolha uma opção: ")
+        limpar_tela()
+        if opcao == "1":
+            menu_create()
+        elif opcao == "2":
+            menu_update()
+        elif opcao == "3":
+            read_all()
+        elif opcao == "0":
+            print("\nSaindo do sistema...")
+            break
+        else:
+            print("\nOpção inválida! Tente novamente.")
+
+
+menu()
+conn.close()
