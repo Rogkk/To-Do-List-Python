@@ -48,7 +48,37 @@ def update(id, newTitle=None, newDescription=None):
     elif newDescription is not None:
         cursor.execute("UPDATE tasks SET description = ?, updated_at = ? WHERE id = ?", (newDescription, updated_at, id))
     conn.commit()
+    
+def delete(id):
+    cursor.execute("SELECT * FROM tasks WHERE id = ?", (id,))
+    task = cursor.fetchone()
+    if not task:
+        return
+    cursor.execute("DELETE FROM tasks where id = ?", (id,))
+    conn.commit()
 
+
+
+
+def menu_delete():
+    print("===== DELETAR UMA TAREFA =====")
+    id = int(input("ID: "))
+    cursor.execute("SELECT * FROM tasks WHERE id = ?", (id,))
+    row = cursor.fetchone()
+    if row != None:
+        id, title, description, completed, created_at, updated_at = row
+        print("-" * 150)
+        print(f"ID:{id}\t\tTitle:{title}\t\tDescr:{description}\t\tComple:{completed}\t\tCreat:{created_at}\t\tUpd:{updated_at}")
+        print("-" * 150)
+        force = input("Deseja excluir? (y/n)")
+        if force == 'y' or force == 'Y':
+            delete(id)
+        elif force == 'n' or force == 'N':
+            return
+        else:
+            print("Opção Invalida")
+            return
+    
 
 
 def menu_create():
@@ -78,6 +108,7 @@ def menu():
         print("1 - Nova tarefa")
         print("2 - Atualizar tarefa")
         print("3 - Ver tarefas")
+        print("4 - Deletar tarefa")
         print("0 - Sair")
 
         opcao = input("Escolha uma opção: ")
@@ -88,6 +119,8 @@ def menu():
             menu_update()
         elif opcao == "3":
             read_all()
+        elif opcao == "4":
+            menu_delete()
         elif opcao == "0":
             print("\nSaindo do sistema...")
             break
